@@ -2,288 +2,174 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Reto Futbolero · Quiniela Mundial 2026</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B4E;--blue:#1A5FA8;--lblue:#378ADD;--teal:#0E7C5A;--green:#1D9E75;
+  --amber:#D97706;--red:#C0392B;--purple:#534AB7;--gray:#6B7280;
+  --lgray:#F3F4F6;--white:#FFFFFF;--dkgray:#374151;
+  --bg:#F8FAFC;--surface:#FFFFFF;--border:#E2E8F0;--text:#1E293B;--muted:#64748B;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 
-  :root {
-    --navy:   #0D2B4E;
-    --blue:   #1A5FA8;
-    --lblue:  #378ADD;
-    --teal:   #0E7C5A;
-    --green:  #1D9E75;
-    --amber:  #D97706;
-    --red:    #C0392B;
-    --purple: #534AB7;
-    --gray:   #6B7280;
-    --lgray:  #F3F4F6;
-    --white:  #FFFFFF;
-    --bg:     #0A0F1E;
-    --surface:#111827;
-    --surface2:#1C2539;
-    --border: rgba(255,255,255,0.07);
-    --text:   #E2E8F0;
-    --muted:  #94A3B8;
-  }
+/* ── TOP HEADER */
+.top-header{background:linear-gradient(135deg,#0D2B4E 0%,#1A3A6E 100%);padding:0 1.5rem}
+.top-header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px;gap:1rem}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{width:34px;height:34px;background:linear-gradient(135deg,#1A5FA8,#378ADD);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.brand-name{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:#fff}
+.brand-name span{color:#7BC3F0}
+.header-pills{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.pill{font-size:10px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.pill-b{background:rgba(55,138,221,.2);color:#7BC3F0;border:1px solid rgba(123,195,240,.25)}
+.pill-g{background:rgba(29,158,117,.2);color:#6EE7C7;border:1px solid rgba(110,231,199,.25)}
+.pill-a{background:rgba(217,119,6,.2);color:#FCD34D;border:1px solid rgba(252,211,77,.25)}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── HERO BAND */
+.hero{background:linear-gradient(135deg,#0D2B4E 0%,#1A3A6E 60%,#1E4A8A 100%);padding:1.75rem 1.5rem 1.5rem;border-bottom:3px solid var(--blue)}
+.hero-inner{max-width:1400px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:.5rem}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.4rem,3vw,2.1rem);font-weight:700;color:#fff;line-height:1.1}
+.hero-title em{font-style:normal;color:#7BC3F0}
+.hero-date{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:#FCD34D;white-space:nowrap}
+.hero-sub{font-size:.82rem;color:#94B8D4;margin-bottom:1rem}
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-  }
+/* ── KPI CARDS */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.kpi-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.8rem 1rem;text-align:center}
+.kpi-card.accent-teal{background:rgba(14,124,90,.25);border-color:rgba(14,124,90,.4)}
+.kpi-card.accent-amber{background:rgba(217,119,6,.2);border-color:rgba(217,119,6,.4)}
+.kpi-card.accent-purple{background:rgba(83,74,183,.25);border-color:rgba(83,74,183,.4)}
+.kpi-card.accent-green{background:rgba(29,158,117,.2);border-color:rgba(29,158,117,.4)}
+.kpi-card.accent-gray{background:rgba(107,114,128,.2);border-color:rgba(107,114,128,.4)}
+.kpi-label{font-size:10px;color:#94B8D4;text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:2px}
+.kpi-value{font-family:'Space Grotesk',sans-serif;font-size:1.7rem;font-weight:700;color:#fff;line-height:1}
+.kpi-sub{font-size:10px;color:#7BAFC8;margin-top:2px}
 
-  /* ── HEADER */
-  .header {
-    background: linear-gradient(135deg, #0A0F1E 0%, #0D2B4E 60%, #1A3A6E 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 0 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(12px);
-  }
-  .header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-    gap: 1rem;
-  }
-  .header-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .header-ball {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, #1A5FA8, #378ADD);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    flex-shrink: 0;
-    box-shadow: 0 0 20px rgba(26,95,168,0.4);
-  }
-  .header-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--white);
-    white-space: nowrap;
-  }
-  .header-title span {
-    color: var(--lblue);
-  }
-  .header-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-  .pill {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-  }
-  .pill-blue  { background: rgba(26,95,168,0.25); color: #60A5FA; border: 1px solid rgba(96,165,250,0.2); }
-  .pill-green { background: rgba(14,124,90,0.25); color: #34D399; border: 1px solid rgba(52,211,153,0.2); }
-  .pill-amber { background: rgba(217,119,6,0.25); color: #FCD34D; border: 1px solid rgba(252,211,77,0.2); }
+/* ── TABS */
+.tabs-bar{background:var(--navy);border-bottom:1px solid #1E3A5F;padding:0 1.5rem;position:sticky;top:0;z-index:50}
+.tabs-inner{max-width:1400px;margin:0 auto;display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs-inner::-webkit-scrollbar{height:3px}
+.tabs-inner::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:2px}
+.tab-btn{font-size:12px;font-weight:500;color:#94A3B8;padding:12px 16px;border:none;background:transparent;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;font-family:'Inter',sans-serif}
+.tab-btn:hover{color:#fff}
+.tab-btn.active{color:#7BC3F0;border-bottom-color:#378ADD}
+.tab-colors .t0.active{color:#7BC3F0;border-bottom-color:#1A5FA8}
+.tab-colors .t1.active{color:#6EE7B7;border-bottom-color:#0E7C5A}
+.tab-colors .t2.active{color:#FCD34D;border-bottom-color:#D97706}
+.tab-colors .t3.active{color:#A5B4FC;border-bottom-color:#534AB7}
+.tab-colors .t4.active{color:#86EFAC;border-bottom-color:#1D9E75}
+.tab-colors .t5.active{color:#FCA5A5;border-bottom-color:#C0392B}
+.tab-colors .t6.active{color:#CBD5E1;border-bottom-color:#6B7280}
 
-  /* ── HERO */
-  .hero {
-    background: linear-gradient(180deg, #0D2B4E 0%, #0A0F1E 100%);
-    padding: 3rem 2rem 2rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .hero-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-  .hero-eyebrow {
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--lblue);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-  .hero-heading {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1.1;
-    margin-bottom: 0.75rem;
-  }
-  .hero-heading em {
-    font-style: normal;
-    color: var(--lblue);
-  }
-  .hero-sub {
-    font-size: 0.9rem;
-    color: var(--muted);
-    max-width: 620px;
-  }
+/* ── CONTENT */
+.content{max-width:1400px;margin:0 auto;padding:1.5rem}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
 
-  /* ── KPI GRID */
-  .kpi-grid {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 1.5rem 2rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 12px;
-  }
-  .kpi-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, border-color 0.2s;
-  }
-  .kpi-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
-  .kpi-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--accent, #1A5FA8);
-  }
-  .kpi-label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-  .kpi-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700; color: var(--white); line-height: 1; }
-  .kpi-sub   { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .kpi-warn  { --accent: #C0392B; }
-  .kpi-teal  { --accent: #0E7C5A; }
-  .kpi-amber { --accent: #D97706; }
-  .kpi-purp  { --accent: #534AB7; }
-  .kpi-green { --accent: #1D9E75; }
+/* ── SECTION TITLE */
+.sec-title{font-family:'Space Grotesk',sans-serif;font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:.3rem}
+.sec-sub{font-size:.8rem;color:var(--muted);margin-bottom:1rem}
 
-  /* ── MAIN GRID */
-  .main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem 3rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  .full-width { grid-column: 1 / -1; }
+/* ── CHART CARDS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.span-2{grid-column:1/-1}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card-title{font-family:'Space Grotesk',sans-serif;font-size:.85rem;font-weight:700;color:var(--navy);margin-bottom:.25rem}
+.card-sub{font-size:.75rem;color:var(--muted);margin-bottom:.75rem}
+.chart-wrap{position:relative}
+.legend-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:.6rem}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.insight{background:#EFF6FF;border:1px solid #BFDBFE;border-left:3px solid var(--blue);border-radius:6px;padding:8px 12px;font-size:11.5px;color:#1E3A8A;margin-top:.75rem;line-height:1.5}
+.insight.warn{background:#FEF2F2;border-color:#FCA5A5;border-left-color:var(--red);color:#7F1D1D}
+.insight.amber{background:#FFFBEB;border-color:#FDE68A;border-left-color:var(--amber);color:#78350F}
+.insight.green{background:#F0FDF4;border-color:#BBF7D0;border-left-color:var(--teal);color:#14532D}
 
-  /* ── CHART CARD */
-  .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
-  .card-title  { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--white); }
-  .card-sub    { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .legend-row  { display: flex; flex-wrap: wrap; gap: 12px; }
-  .leg-item    { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
-  .leg-dot     { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
-  .chart-wrap  { position: relative; }
+/* ── HALLAZGOS */
+.hallazgos{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+.hallazgo{display:flex;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.hallazgo-num{width:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:#fff}
+.hallazgo-body{padding:.8rem 1rem;flex:1;background:var(--surface)}
+.hallazgo-title{font-size:.83rem;font-weight:700;color:var(--navy);margin-bottom:4px}
+.hallazgo-desc{font-size:.78rem;color:var(--muted);line-height:1.55}
 
-  /* ── ALERT CARDS */
-  .alert-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-  }
-  .alert-card {
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
-    border: 1px solid;
-  }
-  .alert-red    { background: rgba(192,57,43,0.1); border-color: rgba(192,57,43,0.3); }
-  .alert-amber  { background: rgba(217,119,6,0.1); border-color: rgba(217,119,6,0.3); }
-  .alert-purple { background: rgba(83,74,183,0.1); border-color: rgba(83,74,183,0.3); }
-  .alert-icon   { font-size: 1.5rem; margin-bottom: 6px; }
-  .alert-num    { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; }
-  .alert-red    .alert-num { color: #F87171; }
-  .alert-amber  .alert-num { color: #FCD34D; }
-  .alert-purple .alert-num { color: #A5B4FC; }
-  .alert-title  { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .alert-desc   { font-size: 11px; color: var(--muted); line-height: 1.5; }
+/* ── ALERTAS */
+.alerta-header{border-radius:10px 10px 0 0;padding:.75rem 1rem;font-size:.83rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.alerta-red .alerta-header{background:#FEE2E2;color:#991B1B}
+.alerta-amber .alerta-header{background:#FEF3C7;color:#92400E}
+.alerta-blue .alerta-header{background:#DBEAFE;color:#1E3A8A}
+.alerta-purple .alerta-header{background:#EDE9FE;color:#4C1D95}
+.alerta-body{border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;overflow:hidden;margin-bottom:16px}
+.alerta-desc{padding:.6rem 1rem;font-size:.78rem;color:var(--muted);line-height:1.5;background:#FAFAFA;border-bottom:1px solid var(--border)}
 
-  /* ── INSIGHT BOX */
-  .insight {
-    background: rgba(26,95,168,0.1);
-    border: 1px solid rgba(26,95,168,0.25);
-    border-left: 3px solid var(--blue);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 12px;
-    color: #93C5FD;
-    line-height: 1.5;
-  }
+/* ── TABLES */
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.78rem}
+th{background:var(--navy);color:#fff;padding:8px 12px;text-align:left;font-weight:600;font-size:11px;white-space:nowrap}
+td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:#F8FAFC}
+tr:hover td{background:#EFF6FF}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.badge-blue{background:#DBEAFE;color:#1E3A8A}
+.badge-green{background:#D1FAE5;color:#065F46}
+.badge-amber{background:#FEF3C7;color:#92400E}
+.badge-red{background:#FEE2E2;color:#991B1B}
+.badge-purple{background:#EDE9FE;color:#4C1D95}
+.badge-gray{background:#F1F5F9;color:#475569}
 
-  /* ── SECTION LABEL */
-  .section-label {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0.5rem 0 0;
-  }
-  .section-label-text {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-  }
-  .section-label-line {
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
+/* ── DATA TABLE CONTROLS */
+.table-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.75rem}
+.search-box{padding:6px 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;width:220px;outline:none;color:var(--text)}
+.search-box:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,95,168,.1)}
+.filter-sel{padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;background:var(--surface)}
+.table-count{font-size:11px;color:var(--muted)}
+.pagination{display:flex;gap:4px;justify-content:flex-end;margin-top:.75rem}
+.page-btn{padding:4px 10px;border:1px solid var(--border);border-radius:6px;font-size:11px;cursor:pointer;background:var(--surface);color:var(--text);font-family:'Inter',sans-serif}
+.page-btn:hover{background:var(--lgray)}
+.page-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 
-  /* ── FOOTER */
-  .footer {
-    border-top: 1px solid var(--border);
-    padding: 1.5rem 2rem;
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-  }
+/* ── ALERT SUMMARY CARDS */
+.alert-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.as-card{border-radius:10px;padding:1rem 1.25rem;border:1px solid}
+.as-red{background:#FEF2F2;border-color:#FECACA}
+.as-amber{background:#FFFBEB;border-color:#FDE68A}
+.as-purple{background:#F5F3FF;border-color:#DDD6FE}
+.as-num{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;margin:.2rem 0}
+.as-red .as-num{color:#DC2626}
+.as-amber .as-num{color:#D97706}
+.as-purple .as-num{color:#7C3AED}
+.as-title{font-size:.8rem;font-weight:700;color:var(--navy);margin-bottom:3px}
+.as-desc{font-size:.73rem;color:var(--muted);line-height:1.5}
 
-  @media (max-width: 768px) {
-    .main { grid-template-columns: 1fr; }
-    .full-width { grid-column: 1; }
-    .alert-grid { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    .header-meta .pill:nth-child(n+3) { display: none; }
-  }
+@media(max-width:768px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .span-2{grid-column:1}
+  .alert-summary{grid-template-columns:1fr}
+  .hero-top{flex-direction:column}
+}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
-    <div class="header-logo">
-      <div class="header-ball">⚽</div>
-      <div class="header-title">Reto Futbolero <span>· Quiniela Mundial 2026</span></div>
+<!-- TOP HEADER -->
+<header class="top-header">
+  <div class="top-header-inner">
+    <div class="brand">
+      <div class="brand-icon">⚽</div>
+      <div class="brand-name">Reto Futbolero <span>· Quiniela Mundial 2026</span></div>
     </div>
-    <div class="header-meta">
-      <span class="pill pill-blue">310 leads</span>
-      <span class="pill pill-green">2–8 jun 2026</span>
-      <span class="pill pill-amber">3 países core</span>
+    <div class="header-pills">
+      <span class="pill pill-b">310 leads</span>
+      <span class="pill pill-g">2–8 jun 2026</span>
+      <span class="pill pill-a">WebConnect</span>
     </div>
   </div>
 </header>
@@ -291,328 +177,603 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">Análisis de leads · Campaña WebConnect</div>
-    <h1 class="hero-heading">Dashboard <em>Ejecutivo</em></h1>
-    <p class="hero-sub">310 participantes registrados entre el 2 y el 8 de junio de 2026 en Guatemala, Costa Rica y El Salvador. El 77.1% llegó en solo dos días.</p>
+    <div class="hero-top">
+      <h1 class="hero-title">RETO FUTBOLERO , <em>QUINIELA MUNDIAL 2026</em></h1>
+      <div class="hero-date">2–8 Junio 2026</div>
+    </div>
+    <div class="hero-sub">Análisis de leads · Campaña WebConnect &nbsp;·&nbsp; Base: 310 leads · 3 países core: Guatemala, Costa Rica, El Salvador · Fuente: Kommo CRM export</div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Total Leads</div><div class="kpi-value">310</div><div class="kpi-sub">7 días activos</div></div>
+      <div class="kpi-card accent-teal"><div class="kpi-label">Guatemala</div><div class="kpi-value">159</div><div class="kpi-sub">51.3% · PDC / Codisa</div></div>
+      <div class="kpi-card accent-amber"><div class="kpi-label">Costa Rica</div><div class="kpi-value">62</div><div class="kpi-sub">20.0% · DISAL</div></div>
+      <div class="kpi-card accent-purple"><div class="kpi-label">El Salvador</div><div class="kpi-value">54</div><div class="kpi-sub">17.4% · PDC Comercial</div></div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="kpi-label">Colaboradores</div><div class="kpi-value">250</div><div class="kpi-sub">80.6% del total</div></div>
+      <div class="kpi-card accent-green"><div class="kpi-label">Clientes</div><div class="kpi-value">29</div><div class="kpi-sub">9.4% · solo GT activo</div></div>
+      <div class="kpi-card accent-gray"><div class="kpi-label">BTL / Regional</div><div class="kpi-value">31</div><div class="kpi-sub">10.0% · 3 países</div></div>
+      <div class="kpi-card"><div class="kpi-label">Edad promedio</div><div class="kpi-value">35.1</div><div class="kpi-sub">268 con edad registrada</div></div>
+    </div>
   </div>
 </section>
 
-<!-- KPIs -->
-<div class="kpi-grid">
-  <div class="kpi-card">
-    <div class="kpi-label">Total leads</div>
-    <div class="kpi-value">310</div>
-    <div class="kpi-sub">7 días de campaña</div>
+<!-- TABS -->
+<nav class="tabs-bar">
+  <div class="tabs-inner tab-colors">
+    <button class="tab-btn t0 active" onclick="showTab(0,this)">📊 Resumen Ejecutivo</button>
+    <button class="tab-btn t1" onclick="showTab(1,this)">📅 Actividad Diaria</button>
+    <button class="tab-btn t2" onclick="showTab(2,this)">🌎 Países y Tipo</button>
+    <button class="tab-btn t3" onclick="showTab(3,this)">🏢 Distribuidores</button>
+    <button class="tab-btn t4" onclick="showTab(4,this)">👤 Perfil de Edad</button>
+    <button class="tab-btn t5" onclick="showTab(5,this)">🏭 Empresas por País</button>
+    <button class="tab-btn t6 active-red" onclick="showTab(6,this)">🚨 Alertas y Seguimiento</button>
+    <button class="tab-btn" onclick="showTab(7,this)">📋 Datos Completos</button>
   </div>
-  <div class="kpi-card kpi-teal">
-    <div class="kpi-label">Guatemala</div>
-    <div class="kpi-value">159</div>
-    <div class="kpi-sub">51.3% · PDC / Codisa</div>
-  </div>
-  <div class="kpi-card kpi-amber">
-    <div class="kpi-label">Costa Rica</div>
-    <div class="kpi-value">62</div>
-    <div class="kpi-sub">20.0% · DISAL</div>
-  </div>
-  <div class="kpi-card kpi-purp">
-    <div class="kpi-label">El Salvador</div>
-    <div class="kpi-value">54</div>
-    <div class="kpi-sub">17.4% · PDC</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">Colaboradores</div>
-    <div class="kpi-value">250</div>
-    <div class="kpi-sub">80.6% del total</div>
-  </div>
-  <div class="kpi-card kpi-green">
-    <div class="kpi-label">Clientes</div>
-    <div class="kpi-value">29</div>
-    <div class="kpi-sub">9.4% · solo GT activo</div>
-  </div>
-  <div class="kpi-card">
-    <div class="kpi-label">Edad promedio</div>
-    <div class="kpi-value">35.1</div>
-    <div class="kpi-sub">268 con edad registrada</div>
-  </div>
-  <div class="kpi-card kpi-warn">
-    <div class="kpi-label">Alertas ⚠️</div>
-    <div class="kpi-value">40</div>
-    <div class="kpi-sub">Requieren acción</div>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+
+<!-- ═══ TAB 0: RESUMEN EJECUTIVO ═══ -->
+<div class="tab-pane active" id="tab-0">
+  <div class="grid-2">
+    <div style="grid-column:1/-1">
+      <div class="card" style="border-top:3px solid #1A5FA8">
+        <div class="card-title" style="font-size:1rem;margin-bottom:.5rem">HALLAZGOS CLAVE</div>
+        <div class="hallazgos">
+          <div class="hallazgo">
+            <div class="hallazgo-num" style="background:#1A5FA8">01</div>
+            <div class="hallazgo-body">
+              <div class="hallazgo-title">Guatemala lidera con el 51.3% pero arrancó 3 días antes que los demás</div>
+              <div class="hallazgo-desc">Con 159 leads, Guatemala es el mercado más activo. Sin embargo, sus registros comenzaron el 2 de junio mientras Costa Rica y El Salvador no se activaron masivamente hasta el 5 de junio. Esto sugiere un rollout escalonado por país y que el potencial de CR y ES podría ser mayor si se activan simultáneamente desde el día 1.</div>
+            </div>
+          </div>
+          <div class="hallazgo">
+            <div class="hallazgo-num" style="background:#0E7C5A">02</div>
+            <div class="hallazgo-body">
+              <div class="hallazgo-title">El 77.1% de los leads se concentró en solo 2 días, 4 y 5 de junio</div>
+              <div class="hallazgo-desc">El día 4 registró 112 inscripciones y el día 5 un total de 127, ambos días explican más de tres cuartas partes de la campaña completa. Esta alta concentración indica que las comunicaciones de activación (correo, WhatsApp, supervisor) tienen un efecto inmediato y corto. El tiempo de respuesta post-convocatoria es menor a 24 horas.</div>
+            </div>
+          </div>
+          <div class="hallazgo">
+            <div class="hallazgo-num" style="background:#D97706">03</div>
+            <div class="hallazgo-body">
+              <div class="hallazgo-title">DISAL es el 72.6% de Costa Rica, concentración de riesgo en un solo distribuidor</div>
+              <div class="hallazgo-desc">De los 62 leads de Costa Rica, 54 provienen exclusivamente de DISAL en sus distintas variantes (DISAL, DISAL COYOL, DISAL VENTAS). Si DISAL no activa, Costa Rica no participa. Esto representa un riesgo de concentración que la estrategia de campaña debe diversificar hacia otros canales o clientes directos.</div>
+            </div>
+          </div>
+          <div class="hallazgo">
+            <div class="hallazgo-num" style="background:#534AB7">04</div>
+            <div class="hallazgo-body">
+              <div class="hallazgo-title">Solo Guatemala tiene clientes activos, CR y ES son exclusivamente colaboradores</div>
+              <div class="hallazgo-desc">De los 29 leads de tipo cliente, 24 son de Guatemala. Costa Rica tiene apenas 2 clientes y El Salvador cero. La campaña en CR y ES opera únicamente como activación interna de fuerza de ventas. Esto es una oportunidad no explotada: el segmento de clientes finales en esos mercados no está siendo alcanzado.</div>
+            </div>
+          </div>
+          <div class="hallazgo">
+            <div class="hallazgo-num" style="background:#374151">05</div>
+            <div class="hallazgo-body">
+              <div class="hallazgo-title">Los registros se hacen en horario laboral, 10h y 15h son los picos</div>
+              <div class="hallazgo-desc">El 85.8% de los leads se inscribió entre las 8h y las 18h, con picos claros a las 10h (81 registros) y 15h (62 registros). Esto confirma que los participantes se registran desde el trabajo, probablemente luego de una comunicación de su supervisor o área de RR.HH. Las convocatorias enviadas a primera hora de la mañana maximizan la respuesta.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="grid-column:1/-1">
+      <div class="card" style="border-top:3px solid #C0392B">
+        <div class="card-title" style="font-size:1rem;color:#991B1B;margin-bottom:.75rem">ÁREAS DE OBSERVACIÓN — Requieren Acción</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:1rem">⚠️</span><span style="font-size:.83rem;font-weight:700;color:#991B1B">14 leads en estatus TEMPORAL, formularios incompletos</span></div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.55;padding-left:26px">13 son clientes de Guatemala (distribuidor PDC-CODISA) y 1 es BTL de Costa Rica. Todos tienen empresa en blanco. Requieren seguimiento manual para completar el formulario o reenviar el enlace de registro. Sin esta corrección, estos leads no pueden ser activados en la app.</div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:12px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:1rem">🌐</span><span style="font-size:.83rem;font-weight:700;color:#92400E">9 leads fuera del core de campaña, enlace no controlado</span></div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.55;padding-left:26px">Se registraron personas de España (2), Honduras (2), Panamá (2), Portugal (1), Francia (1) y Costa de Marfil (1). Todos parecen ser colaboradores de PDC con relaciones comerciales internacionales. El enlace de registro circuló fuera del territorio objetivo. Se recomienda activar restricción geográfica en el formulario o validar el código de distribuidor antes de permitir el registro.</div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:12px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:1rem">📋</span><span style="font-size:.83rem;font-weight:700;color:#1E3A8A">17 leads con 'Seleccione su empleador', sin distribuidor asignado</span></div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.55;padding-left:26px">Estos registros no tienen un código de distribuidor identificado, lo que dificulta la trazabilidad y la asignación de méritos comerciales. Distribuidos entre Guatemala (6), El Salvador (7) y Costa Rica (2). Se recomienda hacer obligatorio el campo de empleador en el formulario y revisar si estos leads corresponden a clientes directos sin distribuidor asignado.</div>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:12px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><span style="font-size:1rem">📊</span><span style="font-size:.83rem;font-weight:700;color:#065F46">El mercado de clientes finales en CR y ES está sin activar</span></div>
+            <div style="font-size:.78rem;color:var(--muted);line-height:1.55;padding-left:26px">La campaña llegó casi exclusivamente a colaboradores en Costa Rica y El Salvador. Ningún cliente de El Salvador participó y solo 2 en Costa Rica. Si el objetivo es construcción de base de consumidores, se requiere una mecánica de activación adicional orientada a clientes finales en esos mercados, distinta de la comunicación interna corporativa.</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- MAIN CHARTS -->
-<div class="main">
-
-  <!-- SECTION: ACTIVIDAD -->
-  <div class="section-label">
-    <span class="section-label-text">Actividad de campaña</span>
-    <div class="section-label-line"></div>
-  </div>
-
-  <!-- Chart 1: Daily stacked -->
-  <div class="chart-card full-width">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Inscripciones diarias por país</div>
-        <div class="card-sub">4 jun (112) + 5 jun (127) = 77.1% del total en solo 48 horas</div>
-      </div>
+<!-- ═══ TAB 1: ACTIVIDAD DIARIA ═══ -->
+<div class="tab-pane" id="tab-1">
+  <div class="grid-2">
+    <div class="span-2 card">
+      <div class="card-title">Inscripciones diarias por país</div>
+      <div class="card-sub">4 jun (112) + 5 jun (127) = 77.1% del total en 48 horas · Guatemala inició 3 días antes que CR y ES</div>
       <div class="legend-row">
-        <span class="leg-item"><span class="leg-dot" style="background:#1A5FA8"></span>Guatemala</span>
-        <span class="leg-item"><span class="leg-dot" style="background:#0E7C5A"></span>Costa Rica</span>
-        <span class="leg-item"><span class="leg-dot" style="background:#D97706"></span>El Salvador</span>
-        <span class="leg-item"><span class="leg-dot" style="background:#534AB7"></span>BTL/Otros</span>
+        <span class="leg"><span class="leg-dot" style="background:#1A5FA8"></span>Guatemala</span>
+        <span class="leg"><span class="leg-dot" style="background:#0E7C5A"></span>Costa Rica</span>
+        <span class="leg"><span class="leg-dot" style="background:#D97706"></span>El Salvador</span>
+        <span class="leg"><span class="leg-dot" style="background:#534AB7"></span>BTL/Otros</span>
+      </div>
+      <div class="chart-wrap" style="height:260px"><canvas id="c-daily"></canvas></div>
+      <div class="insight">💡 Un lanzamiento simultáneo en los 3 países habría distribuido mejor el volumen y probablemente aumentado el total de registros, ya que CR y ES demostraron alta capacidad de respuesta el día que recibieron la convocatoria.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Tabla de actividad por día</div>
+      <div class="card-sub">Desglose completo de inscripciones diarias</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Fecha</th><th>Guatemala</th><th>Costa Rica</th><th>El Salvador</th><th>Otros</th><th>Total</th><th>% del Total</th></tr></thead>
+          <tbody>
+            <tr><td>2 jun</td><td>2</td><td>0</td><td>0</td><td>0</td><td><strong>2</strong></td><td>0.6%</td></tr>
+            <tr><td>3 jun</td><td>9</td><td>2</td><td>0</td><td>1</td><td><strong>12</strong></td><td>3.9%</td></tr>
+            <tr><td style="color:#1A5FA8;font-weight:700">4 jun ★</td><td>77</td><td>3</td><td>20</td><td>12</td><td><strong>112</strong></td><td>36.1%</td></tr>
+            <tr><td style="color:#1A5FA8;font-weight:700">5 jun ★</td><td>46</td><td>35</td><td>25</td><td>21</td><td><strong>127</strong></td><td>41.0%</td></tr>
+            <tr><td>6 jun</td><td>13</td><td>18</td><td>6</td><td>1</td><td><strong>38</strong></td><td>12.3%</td></tr>
+            <tr><td>7 jun</td><td>7</td><td>0</td><td>2</td><td>0</td><td><strong>9</strong></td><td>2.9%</td></tr>
+            <tr><td>8 jun</td><td>5</td><td>4</td><td>1</td><td>0</td><td><strong>10</strong></td><td>3.2%</td></tr>
+            <tr style="background:#EFF6FF"><td><strong>TOTAL</strong></td><td><strong>159</strong></td><td><strong>62</strong></td><td><strong>54</strong></td><td><strong>35</strong></td><td><strong>310</strong></td><td><strong>100%</strong></td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="chart-wrap" style="height:240px">
-      <canvas id="c-daily"></canvas>
-    </div>
-    <div class="insight">💡 Guatemala inició 3 días antes que CR y ES. Un lanzamiento simultáneo en los 3 países habría maximizado el pico del día 4–5.</div>
-  </div>
-
-  <!-- Chart 2: Country donut -->
-  <div class="chart-card">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Distribución por país</div>
-        <div class="card-sub">Guatemala domina con más de la mitad</div>
-      </div>
-    </div>
-    <div class="legend-row">
-      <span class="leg-item"><span class="leg-dot" style="background:#1A5FA8"></span>Guatemala 51.3%</span>
-      <span class="leg-item"><span class="leg-dot" style="background:#0E7C5A"></span>Costa Rica 20.0%</span>
-      <span class="leg-item"><span class="leg-dot" style="background:#D97706"></span>El Salvador 17.4%</span>
-      <span class="leg-item"><span class="leg-dot" style="background:#6B7280"></span>Otros 11.3%</span>
-    </div>
-    <div class="chart-wrap" style="height:220px">
-      <canvas id="c-pais"></canvas>
+    <div class="card">
+      <div class="card-title">Inscripciones por hora del día</div>
+      <div class="card-sub">Comportamiento 100% laboral · picos 10h (81) y 15h (62)</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="c-hora"></canvas></div>
+      <div class="insight amber">💡 Enviar la convocatoria a las 9:00h captura el pico de las 10h. Una segunda comunicación a las 14:00h asegura el pico vespertino.</div>
     </div>
   </div>
-
-  <!-- Chart 3: Tipo x país -->
-  <div class="chart-card">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Tipo de participante por país</div>
-        <div class="card-sub">Solo Guatemala activa clientes finales</div>
-      </div>
-    </div>
-    <div class="legend-row">
-      <span class="leg-item"><span class="leg-dot" style="background:#1A5FA8"></span>Colaborador</span>
-      <span class="leg-item"><span class="leg-dot" style="background:#1D9E75"></span>Cliente</span>
-      <span class="leg-item"><span class="leg-dot" style="background:#D97706"></span>BTL</span>
-    </div>
-    <div class="chart-wrap" style="height:220px">
-      <canvas id="c-tipo-pais"></canvas>
-    </div>
-    <div class="insight">💡 CR y ES tienen 0 o casi 0 clientes. Oportunidad no explotada en ambos mercados.</div>
-  </div>
-
-  <!-- SECTION: DISTRIBUIDORES -->
-  <div class="section-label">
-    <span class="section-label-text">Canales y distribuidores</span>
-    <div class="section-label-line"></div>
-  </div>
-
-  <!-- Chart 4: Distribuidores -->
-  <div class="chart-card full-width">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Leads por distribuidor</div>
-        <div class="card-sub">PDC_GT + DISAL_CR + PDC_ES concentran el 74.5% de toda la campaña</div>
-      </div>
-    </div>
-    <div class="chart-wrap" style="height:220px">
-      <canvas id="c-dist"></canvas>
-    </div>
-    <div class="insight">⚠️ DISAL representa el 72.6% de Costa Rica. Si DISAL no activa, Costa Rica no participa — riesgo de concentración crítico.</div>
-  </div>
-
-  <!-- SECTION: PERFIL -->
-  <div class="section-label">
-    <span class="section-label-text">Perfil del participante</span>
-    <div class="section-label-line"></div>
-  </div>
-
-  <!-- Chart 5: Edad -->
-  <div class="chart-card">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Grupos de edad</div>
-        <div class="card-sub">268 registros válidos · promedio 35.1 años</div>
-      </div>
-    </div>
-    <div class="chart-wrap" style="height:220px">
-      <canvas id="c-edad"></canvas>
-    </div>
-    <div class="insight">💡 El grupo 25–34 representa el 41.4%. Perfil joven y digital — responde bien a mecánicas de gamificación.</div>
-  </div>
-
-  <!-- Chart 6: Hora -->
-  <div class="chart-card">
-    <div class="card-header">
-      <div>
-        <div class="card-title">Inscripciones por hora del día</div>
-        <div class="card-sub">Comportamiento 100% laboral · picos 10h y 15h</div>
-      </div>
-    </div>
-    <div class="chart-wrap" style="height:220px">
-      <canvas id="c-hora"></canvas>
-    </div>
-    <div class="insight">💡 Enviar convocatoria a las 9h captura el pico de 10h. Segunda comunicación a las 14h para el pico de 15h.</div>
-  </div>
-
-  <!-- SECTION: ALERTAS -->
-  <div class="section-label">
-    <span class="section-label-text">Alertas operativas</span>
-    <div class="section-label-line"></div>
-  </div>
-
-  <!-- Alertas -->
-  <div class="full-width">
-    <div class="alert-grid">
-      <div class="alert-card alert-red">
-        <div class="alert-icon">⚠️</div>
-        <div class="alert-num">14</div>
-        <div class="alert-title">Leads TEMPORALES</div>
-        <div class="alert-desc">Formularios incompletos — no pueden activarse en la app. Casi todos son clientes de Guatemala (PDC-CODISA). Acción: reenviar formulario por WhatsApp.</div>
-      </div>
-      <div class="alert-card alert-amber">
-        <div class="alert-icon">📋</div>
-        <div class="alert-num">17</div>
-        <div class="alert-title">Sin distribuidor asignado</div>
-        <div class="alert-desc">Registros con "Seleccione su empleador" — sin trazabilidad comercial. Distribuidos en GT, ES y CR. Acción: hacer el campo obligatorio en el formulario.</div>
-      </div>
-      <div class="alert-card alert-purple">
-        <div class="alert-icon">🌐</div>
-        <div class="alert-num">9</div>
-        <div class="alert-title">Fuera del core geográfico</div>
-        <div class="alert-desc">España (2), Honduras (2), Panamá (2), Portugal, Francia y Costa de Marfil. El link circuló sin restricción. Acción: activar validación de país en el formulario.</div>
-      </div>
-    </div>
-  </div>
-
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
-  Reto Futbolero · Quiniela Mundial 2026 · Análisis WebConnect · Datos: Kommo CRM Export 8 junio 2026 · 310 leads · 3 países
+<!-- ═══ TAB 2: PAÍSES Y TIPO ═══ -->
+<div class="tab-pane" id="tab-2">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Distribución por país</div>
+      <div class="card-sub">Guatemala domina con más de la mitad del total</div>
+      <div class="legend-row">
+        <span class="leg"><span class="leg-dot" style="background:#1A5FA8"></span>Guatemala 51.3%</span>
+        <span class="leg"><span class="leg-dot" style="background:#0E7C5A"></span>Costa Rica 20.0%</span>
+        <span class="leg"><span class="leg-dot" style="background:#D97706"></span>El Salvador 17.4%</span>
+        <span class="leg"><span class="leg-dot" style="background:#6B7280"></span>Otros 11.3%</span>
+      </div>
+      <div class="chart-wrap" style="height:240px"><canvas id="c-pais"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Composición por tipo de participante</div>
+      <div class="card-sub">8 de cada 10 leads son colaboradores de distribuidoras</div>
+      <div class="legend-row">
+        <span class="leg"><span class="leg-dot" style="background:#1A5FA8"></span>Colaborador 80.6%</span>
+        <span class="leg"><span class="leg-dot" style="background:#1D9E75"></span>Cliente 9.4%</span>
+        <span class="leg"><span class="leg-dot" style="background:#D97706"></span>BTL 10.0%</span>
+      </div>
+      <div class="chart-wrap" style="height:240px"><canvas id="c-tipo"></canvas></div>
+    </div>
+    <div class="span-2 card">
+      <div class="card-title">Tipo de participante por país</div>
+      <div class="card-sub">Solo Guatemala activa clientes finales — CR y ES son 100% colaboradores y BTL</div>
+      <div class="legend-row">
+        <span class="leg"><span class="leg-dot" style="background:#1A5FA8"></span>Colaborador</span>
+        <span class="leg"><span class="leg-dot" style="background:#1D9E75"></span>Cliente</span>
+        <span class="leg"><span class="leg-dot" style="background:#D97706"></span>BTL</span>
+      </div>
+      <div class="chart-wrap" style="height:240px"><canvas id="c-tipo-pais"></canvas></div>
+      <div class="insight">💡 Oportunidad: CR y ES tienen 0 o casi 0 clientes activos. Distribuir el formulario de cliente en puntos de venta o QR en empaque puede duplicar la base en esos mercados sin costo adicional.</div>
+    </div>
+    <div class="span-2 card">
+      <div class="card-title">Tabla resumen — País y Tipo</div>
+      <div class="tbl-wrap" style="margin-top:.5rem">
+        <table>
+          <thead><tr><th>País</th><th>Total</th><th>% Total</th><th>Colaborador</th><th>Cliente</th><th>BTL</th><th>% Clientes</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-blue">🇬🇹 Guatemala</span></td><td><strong>159</strong></td><td>51.3%</td><td>121</td><td>24</td><td>14</td><td>15.1%</td></tr>
+            <tr><td><span class="badge badge-green">🇨🇷 Costa Rica</span></td><td><strong>62</strong></td><td>20.0%</td><td>56</td><td>2</td><td>4</td><td>3.2%</td></tr>
+            <tr><td><span class="badge badge-amber">🇸🇻 El Salvador</span></td><td><strong>54</strong></td><td>17.4%</td><td>46</td><td>0</td><td>8</td><td>0.0%</td></tr>
+            <tr><td><span class="badge badge-gray">BTL / Otros</span></td><td><strong>35</strong></td><td>11.3%</td><td>27</td><td>3</td><td>5</td><td>—</td></tr>
+            <tr style="background:#EFF6FF"><td><strong>TOTAL</strong></td><td><strong>310</strong></td><td>100%</td><td><strong>250</strong></td><td><strong>29</strong></td><td><strong>31</strong></td><td>9.4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB 3: DISTRIBUIDORES ═══ -->
+<div class="tab-pane" id="tab-3">
+  <div class="grid-2">
+    <div class="span-2 card">
+      <div class="card-title">Leads por distribuidor / código de campaña</div>
+      <div class="card-sub">PDC_GT + DISAL_CR + PDC_ES concentran el 74.5% — la campaña depende de 3 actores</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="c-dist"></canvas></div>
+      <div class="insight warn">⚠️ 17 leads tienen "Seleccione su empleador" — sin código de distribuidor asignado. No tienen trazabilidad comercial. Hacer el campo obligatorio en el formulario elimina este problema.</div>
+    </div>
+    <div class="span-2 card">
+      <div class="card-title">Tabla de distribuidores</div>
+      <div class="tbl-wrap" style="margin-top:.5rem">
+        <table>
+          <thead><tr><th>#</th><th>Distribuidor / Código</th><th>Leads</th><th>% Total</th><th>País</th><th>Prioridad</th><th>Acción recomendada</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>PDC_GT_COL</strong></td><td><strong>126</strong></td><td>40.6%</td><td><span class="badge badge-blue">Guatemala</span></td><td><span class="badge badge-red">CRÍTICA</span></td><td>Canal principal. Mantener comunicación semanal.</td></tr>
+            <tr><td>2</td><td><strong>DISAL_CRCCOL</strong></td><td><strong>61</strong></td><td>19.7%</td><td><span class="badge badge-green">Costa Rica</span></td><td><span class="badge badge-red">CRÍTICA</span></td><td>Riesgo de concentración. Diversificar hacia otros canales en CR.</td></tr>
+            <tr><td>3</td><td><strong>PDC_ES_COL</strong></td><td><strong>44</strong></td><td>14.2%</td><td><span class="badge badge-amber">El Salvador</span></td><td><span class="badge badge-red">CRÍTICA</span></td><td>Activar mecánica de cliente final — actualmente solo colaboradores.</td></tr>
+            <tr><td>4</td><td>LASIRENABTL</td><td>30</td><td>9.7%</td><td><span class="badge badge-gray">Multi-país</span></td><td><span class="badge badge-amber">ALTA</span></td><td>Documentar territorios BTL activados.</td></tr>
+            <tr><td>5</td><td>PDC - CODISA</td><td>25</td><td>8.1%</td><td><span class="badge badge-blue">Guatemala</span></td><td><span class="badge badge-amber">ALTA</span></td><td>13 TEMPORALES bajo este código. Completar formularios.</td></tr>
+            <tr><td>—</td><td><span style="color:#C0392B">⚠️ Sin empleador</span></td><td>17</td><td>5.5%</td><td>GT/CR/ES</td><td><span class="badge badge-red">ATENCIÓN</span></td><td>Campo obligatorio + limpiar en CRM.</td></tr>
+            <tr><td>6</td><td>PDC</td><td>2</td><td>0.6%</td><td><span class="badge badge-blue">Guatemala</span></td><td><span class="badge badge-gray">BAJA</span></td><td>Posible duplicado de PDC_GT_COL.</td></tr>
+            <tr><td>7</td><td>DISAL_CRCCLI</td><td>1</td><td>0.3%</td><td><span class="badge badge-green">Costa Rica</span></td><td><span class="badge badge-gray">BAJA</span></td><td>Verificar si es canal activo o error.</td></tr>
+            <tr><td>8</td><td>PDC - DIZAC</td><td>1</td><td>0.3%</td><td><span class="badge badge-green">Costa Rica</span></td><td><span class="badge badge-gray">BAJA</span></td><td>Verificar canal.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB 4: PERFIL DE EDAD ═══ -->
+<div class="tab-pane" id="tab-4">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Distribución por grupo de edad</div>
+      <div class="card-sub">268 registros válidos · edad promedio 35.1 años</div>
+      <div class="chart-wrap" style="height:240px"><canvas id="c-edad"></canvas></div>
+      <div class="insight green">💡 El grupo 25–34 representa el 41.4%. Perfil joven, nativo digital, que responde bien a mecánicas de gamificación y competencia.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Edad promedio por país</div>
+      <div class="card-sub">Costa Rica tiene el participante de mayor edad promedio</div>
+      <div class="chart-wrap" style="height:240px"><canvas id="c-edad-pais"></canvas></div>
+      <div class="insight">💡 Los colaboradores de DISAL (Costa Rica) son en promedio 3 años mayores que los de PDC Guatemala. Considerar mecánicas más simples para el segmento senior.</div>
+    </div>
+    <div class="span-2 card">
+      <div class="card-title">Tabla de distribución por grupo de edad</div>
+      <div class="tbl-wrap" style="margin-top:.5rem">
+        <table>
+          <thead><tr><th>Grupo de Edad</th><th>Personas</th><th>% del Total</th><th>% Acumulado</th><th>Segmento</th><th>Implicación para campaña</th></tr></thead>
+          <tbody>
+            <tr><td>18–24</td><td>28</td><td>10.4%</td><td>10.4%</td><td><span class="badge badge-blue">Joven digital</span></td><td>Alta adopción tecnológica. Comunicar en redes y WhatsApp.</td></tr>
+            <tr><td><strong>25–34</strong></td><td><strong>111</strong></td><td><strong>41.4%</strong></td><td>51.9%</td><td><span class="badge badge-green">Adulto joven</span></td><td>Segmento clave. Responde a competencia y gamificación.</td></tr>
+            <tr><td>35–44</td><td>89</td><td>33.2%</td><td>85.1%</td><td><span class="badge badge-amber">Adulto consolidado</span></td><td>Valora premios prácticos y familiares.</td></tr>
+            <tr><td>45–54</td><td>32</td><td>11.9%</td><td>97.0%</td><td><span class="badge badge-purple">Establecido</span></td><td>Participación sólida. Prefiere mecánicas simples.</td></tr>
+            <tr><td>55–70</td><td>8</td><td>3.0%</td><td>100%</td><td><span class="badge badge-gray">Senior</span></td><td>Grupo menor. Puede necesitar soporte de inscripción.</td></tr>
+            <tr style="background:#EFF6FF"><td><strong>TOTAL</strong></td><td><strong>268</strong></td><td>100%</td><td>—</td><td>—</td><td>Promedio: <strong>35.1 años</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB 5: EMPRESAS POR PAÍS ═══ -->
+<div class="tab-pane" id="tab-5">
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title" style="color:#1A5FA8">🇬🇹 Guatemala — Top empresas</div>
+      <div class="card-sub">159 leads · CODISA y PDC dominan</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="c-emp-gt"></canvas></div>
+      <div class="insight">💡 CODISA y PDC juntos representan el 53% de los leads guatemaltecos. Alta dependencia de dos empresas del mismo grupo.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#0E7C5A">🇨🇷 Costa Rica — Top empresas</div>
+      <div class="card-sub">62 leads · DISAL monopoliza el 87%</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="c-emp-cr"></canvas></div>
+      <div class="insight warn">⚠️ DISAL y sus variantes representan el 87% de todos los leads de Costa Rica. Riesgo de concentración extremo.</div>
+    </div>
+    <div class="card">
+      <div class="card-title" style="color:#D97706">🇸🇻 El Salvador — Top empresas</div>
+      <div class="card-sub">54 leads · PDC Comercial ES lidera</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="c-emp-es"></canvas></div>
+      <div class="insight amber">💡 "PDC Comercial El Salvador" aparece en 8 variantes ortográficas diferentes. Estandarizar el campo empresa mejoraría la trazabilidad.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB 6: ALERTAS ═══ -->
+<div class="tab-pane" id="tab-6">
+  <div class="alert-summary">
+    <div class="as-card as-red">
+      <div style="font-size:1.3rem">⚠️</div>
+      <div class="as-num">14</div>
+      <div class="as-title">Leads TEMPORALES</div>
+      <div class="as-desc">Formulario incompleto — empresa en blanco. No pueden activarse en la app Penka.</div>
+    </div>
+    <div class="as-card as-amber">
+      <div style="font-size:1.3rem">📋</div>
+      <div class="as-num">17</div>
+      <div class="as-title">Sin distribuidor asignado</div>
+      <div class="as-desc">Campo "Seleccione su empleador" — sin trazabilidad comercial en 3 países.</div>
+    </div>
+    <div class="as-card as-purple">
+      <div style="font-size:1.3rem">🌐</div>
+      <div class="as-num">9</div>
+      <div class="as-title">Fuera del core geográfico</div>
+      <div class="as-desc">España, Honduras, Panamá, Portugal, Francia y Costa de Marfil. Enlace sin restricción.</div>
+    </div>
+  </div>
+
+  <!-- TEMPORALES TABLE -->
+  <div class="card" style="margin-bottom:16px;border-top:3px solid #C0392B">
+    <div class="card-title" style="color:#991B1B;margin-bottom:.25rem">⚠️ Leads TEMPORALES — Acción inmediata requerida</div>
+    <div class="card-sub">13 son clientes de Guatemala (PDC-CODISA) · 1 es BTL de Costa Rica · Todos tienen empresa en blanco</div>
+    <div class="tbl-wrap" style="margin-top:.75rem">
+      <table>
+        <thead><tr><th>#</th><th>Nombre del lead</th><th>País</th><th>Tipo</th><th>Distribuidor</th><th>Empresa</th><th>Acción</th></tr></thead>
+        <tbody id="tbody-temp"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FUERA CORE TABLE -->
+  <div class="card" style="border-top:3px solid #D97706">
+    <div class="card-title" style="color:#92400E;margin-bottom:.25rem">🌐 Leads fuera del core geográfico</div>
+    <div class="card-sub">El enlace circuló sin restricción · Evaluación de elegibilidad para premios requerida</div>
+    <div class="tbl-wrap" style="margin-top:.75rem">
+      <table>
+        <thead><tr><th>#</th><th>Nombre</th><th>País</th><th>Tipo</th><th>Empresa</th><th>Edad</th><th>Observación</th></tr></thead>
+        <tbody id="tbody-fuera"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TAB 7: DATOS COMPLETOS ═══ -->
+<div class="tab-pane" id="tab-7">
+  <div class="card">
+    <div class="table-controls">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <input type="text" class="search-box" id="searchBox" placeholder="Buscar nombre, empresa..." oninput="filterTable()">
+        <select class="filter-sel" id="filterPais" onchange="filterTable()">
+          <option value="">Todos los países</option>
+          <option value="Guatemala">Guatemala</option>
+          <option value="Costa Rica">Costa Rica</option>
+          <option value="El Salvador">El Salvador</option>
+          <option value="Sin dato">Sin dato</option>
+        </select>
+        <select class="filter-sel" id="filterTipo" onchange="filterTable()">
+          <option value="">Todos los tipos</option>
+          <option value="Colaborador">Colaborador</option>
+          <option value="Cliente">Cliente</option>
+          <option value="BTL">BTL</option>
+        </select>
+        <select class="filter-sel" id="filterEstatus" onchange="filterTable()">
+          <option value="">Todos los estatus</option>
+          <option value="TEMPORAL">TEMPORAL</option>
+          <option value="Contacto inicial">Contacto inicial</option>
+        </select>
+      </div>
+      <span class="table-count" id="tableCount">310 registros</span>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Nombre</th><th>Tipo</th><th>País</th><th>Empresa</th><th>Distribuidor</th><th>Estatus</th><th>Edad</th><th>Hora</th></tr></thead>
+        <tbody id="tbody-main"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<footer style="border-top:1px solid var(--border);padding:1rem 1.5rem;text-align:center;font-size:11px;color:var(--muted)">
+  Reto Futbolero · Quiniela Mundial 2026 · Análisis WebConnect · Datos: Kommo CRM Export 8 junio 2026 · 310 leads · 3 países core
 </footer>
 
 <script>
-Chart.defaults.color = '#94A3B8';
-Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
-const font = { family: 'Inter, sans-serif', size: 11 };
+// ── TAB SWITCHING
+function showTab(n, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+  btn.classList.add('active');
+  if(n===1 && !chartsBuilt.daily) buildDailyCharts();
+  if(n===2 && !chartsBuilt.pais)  buildPaisCharts();
+  if(n===3 && !chartsBuilt.dist)  buildDistChart();
+  if(n===4 && !chartsBuilt.edad)  buildEdadCharts();
+  if(n===5 && !chartsBuilt.emp)   buildEmpCharts();
+}
+const chartsBuilt = {};
 
-// ── DAILY STACKED
-new Chart(document.getElementById('c-daily'), {
-  type: 'bar',
-  data: {
-    labels: ['2 jun','3 jun','4 jun','5 jun','6 jun','7 jun','8 jun'],
-    datasets: [
-      { label: 'Guatemala',   data: [2,9,77,46,13,7,5],  backgroundColor: '#1A5FA8', stack: 's', borderRadius: 3 },
-      { label: 'Costa Rica',  data: [0,2,3,35,18,0,4],   backgroundColor: '#0E7C5A', stack: 's' },
-      { label: 'El Salvador', data: [0,0,20,25,6,2,1],   backgroundColor: '#D97706', stack: 's' },
-      { label: 'BTL/Otros',   data: [0,1,12,21,1,0,0],   backgroundColor: '#534AB7', stack: 's' },
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw}` }}},
-    scales: {
-      x: { stacked: true, ticks: { font } },
-      y: { stacked: true, ticks: { font } }
-    }
-  }
-});
+Chart.defaults.color='#64748B';
+Chart.defaults.borderColor='rgba(0,0,0,0.06)';
+const F={family:'Inter, sans-serif',size:11};
 
-// ── DONUT PAÍS
-new Chart(document.getElementById('c-pais'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Guatemala','Costa Rica','El Salvador','BTL/Otros'],
-    datasets: [{ data: [159,62,54,35], backgroundColor: ['#1A5FA8','#0E7C5A','#D97706','#6B7280'], borderWidth: 0, hoverOffset: 8 }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false, cutout: '65%',
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.label}: ${c.raw} (${Math.round(c.raw/310*100)}%)` }}}
-  }
-});
+// ── SHARED DATA
+const DAYS=['2 jun','3 jun','4 jun','5 jun','6 jun','7 jun','8 jun'];
+const GT=[2,9,77,46,13,7,5],CR=[0,2,3,35,18,0,4],ES=[0,0,20,25,6,2,1],BTL=[0,1,12,21,1,0,0];
 
-// ── TIPO x PAÍS
-new Chart(document.getElementById('c-tipo-pais'), {
-  type: 'bar',
-  data: {
-    labels: ['Guatemala','Costa Rica','El Salvador'],
-    datasets: [
-      { label: 'Colaborador', data: [121,56,46], backgroundColor: '#1A5FA8', stack: 's', borderRadius: 3 },
-      { label: 'Cliente',     data: [24,2,0],    backgroundColor: '#1D9E75', stack: 's' },
-      { label: 'BTL',         data: [14,4,8],    backgroundColor: '#D97706', stack: 's' },
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw}` }}},
-    scales: {
-      x: { stacked: true, ticks: { font } },
-      y: { stacked: true, ticks: { font } }
-    }
-  }
-});
+// ── TAB 0: build immediately (no charts)
+// ── TAB 1: DAILY
+function buildDailyCharts(){
+  chartsBuilt.daily=true;
+  new Chart(document.getElementById('c-daily'),{
+    type:'bar',
+    data:{labels:DAYS,datasets:[
+      {label:'Guatemala',data:GT,backgroundColor:'#1A5FA8',stack:'s',borderRadius:3},
+      {label:'Costa Rica',data:CR,backgroundColor:'#0E7C5A',stack:'s'},
+      {label:'El Salvador',data:ES,backgroundColor:'#D97706',stack:'s'},
+      {label:'BTL/Otros',data:BTL,backgroundColor:'#534AB7',stack:'s'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}`}}},
+      scales:{x:{stacked:true,ticks:{font:F}},y:{stacked:true,ticks:{font:F}}}}
+  });
+  const horaLabels=[...Array(24).keys()].map(h=>h+'h');
+  const horaData=[2,0,0,1,0,0,0,1,27,6,81,27,19,9,5,62,19,16,11,6,9,3,2,4];
+  new Chart(document.getElementById('c-hora'),{
+    type:'bar',
+    data:{labels:horaLabels,datasets:[{label:'Leads',data:horaData,
+      backgroundColor:horaData.map((_,i)=>i===10?'#1A5FA8':i===15?'#0E7C5A':i>=8&&i<=17?'rgba(26,95,168,.45)':'rgba(107,114,128,.3)'),
+      borderRadius:3,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} registros`}}},
+      scales:{x:{ticks:{font:{family:'Inter',size:9},autoSkip:false}},y:{ticks:{font:F},beginAtZero:true}}}
+  });
+}
+// ── TAB 2: PAÍS
+function buildPaisCharts(){
+  chartsBuilt.pais=true;
+  const donutOpts=(cnv,data,labels,colors)=>new Chart(cnv,{type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:colors,borderWidth:0,hoverOffset:8}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: ${c.raw} (${Math.round(c.raw/310*100)}%)`}}}}});
+  donutOpts(document.getElementById('c-pais'),[159,62,54,35],
+    ['Guatemala','Costa Rica','El Salvador','BTL/Otros'],['#1A5FA8','#0E7C5A','#D97706','#6B7280']);
+  donutOpts(document.getElementById('c-tipo'),[250,29,31],
+    ['Colaborador','Cliente','BTL'],['#1A5FA8','#1D9E75','#D97706']);
+  new Chart(document.getElementById('c-tipo-pais'),{type:'bar',
+    data:{labels:['Guatemala','Costa Rica','El Salvador'],datasets:[
+      {label:'Colaborador',data:[121,56,46],backgroundColor:'#1A5FA8',stack:'s',borderRadius:3},
+      {label:'Cliente',data:[24,2,0],backgroundColor:'#1D9E75',stack:'s'},
+      {label:'BTL',data:[14,4,8],backgroundColor:'#D97706',stack:'s'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.raw}`}}},
+      scales:{x:{stacked:true,ticks:{font:F}},y:{stacked:true,ticks:{font:F}}}}
+  });
+}
+// ── TAB 3: DIST
+function buildDistChart(){
+  chartsBuilt.dist=true;
+  new Chart(document.getElementById('c-dist'),{type:'bar',
+    data:{labels:['PDC_GT_COL','DISAL_CRCCOL','PDC_ES_COL','LASIRENABTL','PDC-CODISA','Sin empleador','PDC','DISAL_CRCCLI','PDC-DIZAC'],
+      datasets:[{label:'Leads',data:[126,61,44,30,25,17,2,1,1],
+        backgroundColor:['#1A5FA8','#0E7C5A','#D97706','#534AB7','#1A5FA8','#C0392B','#6B7280','#6B7280','#6B7280'],
+        borderRadius:4,borderSkipped:false}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} leads`}}},
+      scales:{x:{ticks:{font:F}},y:{ticks:{font:F}}}}
+  });
+}
+// ── TAB 4: EDAD
+function buildEdadCharts(){
+  chartsBuilt.edad=true;
+  new Chart(document.getElementById('c-edad'),{type:'bar',
+    data:{labels:['18–24','25–34','35–44','45–54','55–70'],
+      datasets:[{label:'Personas',data:[28,111,89,32,8],
+        backgroundColor:['#6AA8E8','#1A5FA8','#0D2B4E','#D97706','#92400E'],borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} (${Math.round(c.raw/268*100)}%)`}}},
+      scales:{x:{ticks:{font:F}},y:{ticks:{font:F},beginAtZero:true}}}
+  });
+  new Chart(document.getElementById('c-edad-pais'),{type:'bar',
+    data:{labels:['Honduras','Panamá','Costa Rica','El Salvador','Guatemala'],
+      datasets:[{label:'Edad prom.',data:[42.0,38.0,37.8,34.9,34.1],
+        backgroundColor:['#6B7280','#6B7280','#0E7C5A','#D97706','#1A5FA8'],borderRadius:4,borderSkipped:false}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} años promedio`}}},
+      scales:{x:{ticks:{font:F}},y:{min:28,max:46,ticks:{font:F}}}}
+  });
+}
+// ── TAB 5: EMPRESAS
+function buildEmpCharts(){
+  chartsBuilt.emp=true;
+  const hbar=(id,labels,data,color)=>new Chart(document.getElementById(id),{type:'bar',
+    data:{labels,datasets:[{label:'Leads',data,backgroundColor:color,borderRadius:3,borderSkipped:false}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.raw} leads`}}},
+      scales:{x:{ticks:{font:{family:'Inter',size:10}}},y:{ticks:{font:{family:'Inter',size:10}}}}}
+  });
+  hbar('c-emp-gt',['CODISA','PDC','LA SIRENA','GRUPO PDC','PIGSA','PLANTA IND. GT','AVON','MDG'],
+    [32,18,11,8,5,4,4,3],'#1A5FA8');
+  hbar('c-emp-cr',['DISAL','DISAL COYOL','DIST. LOGÍSTICA DISAL','LA SIRENA','DISAL VENTAS','DIASAL'],
+    [45,3,2,2,1,1],'#0E7C5A');
+  hbar('c-emp-es',['PDC COMERCIAL ES','PDC','PDC COM ES SA CV','DIZAC','PDC EL SALVADOR','PDC COMERCIAL','DIZAC PDC'],
+    [13,6,3,3,3,3,2],'#D97706');
+}
+// ── TAB 6: ALERTAS TABLE DATA
+const tempRows=[{"nombre": "Nuevo Lead - BTL regional", "pais": "Costa Rica", "tipo": "BTL", "dist": "LASIRENABTL", "emp": "Disal"}, {"nombre": "Nuevo Lead - Cliente El Salvador", "pais": "Costa Rica", "tipo": "Cliente", "dist": "PDC - DIZAC", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Sin dato", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC - CODISA", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC", "emp": "—"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "pais": "Guatemala", "tipo": "Cliente", "dist": "PDC", "emp": "—"}];
+const fueraRows=[{"nombre": "Nuevo Lead - Colaborador Guatemala", "pais": "España", "tipo": "Colaborador", "emp": "Pdc", "edad": "26"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "pais": "Costa de Marfil", "tipo": "Colaborador", "emp": "50688706358", "edad": "23"}, {"nombre": "Nuevo Lead - BTL regional", "pais": "Panamá", "tipo": "BTL", "emp": "La Sirena", "edad": "19"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "pais": "Portugal", "tipo": "Colaborador", "emp": "PDC CODISA", "edad": "46"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "pais": "Francia", "tipo": "Colaborador", "emp": "PDC_GT_COL", "edad": "33"}, {"nombre": "Nuevo Lead - BTL regional", "pais": "Panamá", "tipo": "BTL", "emp": "La Sirena", "edad": "57"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "pais": "España", "tipo": "Colaborador", "emp": "Codisa", "edad": "34"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "pais": "Honduras", "tipo": "Colaborador", "emp": "La Sirena", "edad": "38"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "pais": "Honduras", "tipo": "Colaborador", "emp": "La sirena", "edad": "46"}];
+const allData=[{"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa s.a", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "9"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Industrial de Guatemala S.A.", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "32", "hora": "9"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "35", "hora": "9"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "55", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "42", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "44", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal coyol", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "36", "hora": "8"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta industrial de Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "32", "hora": "8"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "P.D.C. COMERCIAL EL SALVADOR S.A. DE C.V.", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "37", "hora": "8"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "3"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "42", "hora": "23"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "37", "hora": "22"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "44", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Productos Avon S.A", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañia distribuidora s.a", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "44", "hora": "13"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Industrial De Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "13"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Industrial de Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "52", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "32", "hora": "9"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "23"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía Distribuidora. S.a", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "56", "hora": "22"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC COMERCIAL EL SALVADOR", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "18"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "40", "hora": "17"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "47", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "16"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "49", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "31", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta sancristobal", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "34", "hora": "14"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "39", "hora": "14"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc comercial el salvador sa de cv", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "36", "hora": "13"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc comercial el salvador sa de cv", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "36", "hora": "13"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc comercial el salvador s a de cv", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "42", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal ventas", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "41", "hora": "11"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "34", "hora": "11"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "37", "hora": "11"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Distribuidora y Logistica DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "34", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pigsa", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "50", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "31", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "49", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "41", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Distribuidora y logística Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "45", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "30", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DIsal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "59", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "32", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "47", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "39", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "46", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal coyol", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "21", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal coyol", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "45", "hora": "8"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "27", "hora": "8"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "40", "hora": "8"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "33", "hora": "8"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "40", "hora": "7"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC COMERCIAL EL SALVADOR", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "42", "hora": "0"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañia distribuidora", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "0"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "48", "hora": "23"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "47", "hora": "23"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta pdc escuintla", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "48", "hora": "21"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "23", "hora": "20"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Productos Avon de Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "20"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "34", "hora": "20"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC COMERCIAL DE EL SALVADOR S.A DE C.V", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "34", "hora": "20"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Avon", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "39", "hora": "19"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "50", "hora": "18"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "50", "hora": "18"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador, SA de CV", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "18"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Dizac PDC", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "40", "hora": "18"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "33", "hora": "18"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "33", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "MDG", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "26", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "26", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "16"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "33", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "16"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "43", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Escuintla PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "16"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "33", "hora": "16"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "29", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "DIZAC", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "21", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc el salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "32", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "34", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "41", "hora": "15"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Diasal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "40", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "33", "hora": "13"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "España", "empresa": "Pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "26", "hora": "13"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdccomercialelsalvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "13"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "34", "hora": "13"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "40", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "22", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "49", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "41", "hora": "12"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "24", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Distribuidora y Logística Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "37", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "22", "hora": "12"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "38", "hora": "12"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "47", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL_CRCCOL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "29", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "36", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "43", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "12"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "41", "hora": "12"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "El Salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "23", "hora": "11"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "29", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Dizac pdc", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "39", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CDA.", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "38", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "El Salvador pdc comercial", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "37", "hora": "11"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Pelon de la bajura", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "36", "hora": "11"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Pelon", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "44", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc magia blanca", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "22", "hora": "11"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Avon", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "19", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "39", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "Costa de Marfil", "empresa": "50688706358", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "23", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "24", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "25", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "29", "hora": "11"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Prueba", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "23", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "36", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "36", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Dizac", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "", "estatus": "Contacto inicial", "edad": "42", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "La Sirena", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "38", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "27", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Grupo Pelon", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "34", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "33", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc Comercial S.A DE C V", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC COMERCIAL EL SALVADOR", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "37", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía Distribuidora S.A.", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Grupo PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "22", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC COMERCIAL", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía distribuidora S.A", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "42", "hora": "10"}, {"nombre": "Nuevo Lead - Cliente Costa Rica", "tipo": "Cliente", "pais": "Costa Rica", "empresa": "", "distribuidor": "DISAL_CRCCLI", "estatus": "Contacto inicial", "edad": "47", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc comercial el salvador s.a de c.v", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "35", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Dizac", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "45", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "COMPAÑIA DISTRIBUIDORA S.A", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "MDG", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "35", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía distribuidora s.a", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "31", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC COMERCIAL EL SALVADOR, S.A. DE C.V", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "42", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc col", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "23", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc comercial", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "24", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía distribuidora S.A", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "GrupoPDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "38", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc comercial el salvador s.a de c.v", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "35", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "31", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Sin dato", "empresa": "", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC PLANTA SAN SALVADOR", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Planta San Salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Avon PDC Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "39", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "COORPORATIVO DISAL/PELON", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "30", "hora": "10"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "61", "hora": "10"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Seleccione su empleador", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "33", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Sercomsa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "35", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "38", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC Avon Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "40", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "42", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - La quiniela", "tipo": "Colaborador", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "DISAL_CRCCOL", "estatus": "Contacto inicial", "edad": "31", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador SA de CV", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "38", "hora": "20"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Cda amatitlan", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "29", "hora": "20"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Escuintla pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "20"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Costa Rica", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "23", "hora": "20"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Costa Rica", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "35", "hora": "19"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Panamá", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "19", "hora": "19"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "29", "hora": "19"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODIA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "26", "hora": "19"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Productos Avon de Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "32", "hora": "19"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "41", "hora": "18"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "18"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "18"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Costa Rica", "empresa": "DISAL", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "23", "hora": "18"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "41", "hora": "18"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía distribuidora sa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC Escuintla", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "31", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "25", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa pdc", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Portugal", "empresa": "PDC CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "46", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC Servicios Comerciales", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "24", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "35", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta industrial guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "46", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "17"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "26", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "40", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC codisa", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "21", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "20", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Escuintla", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "16"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "31", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pigsa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "49", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc escuintla guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa amatitlan", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC COMERCIAL", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "38", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc el salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "55", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "45", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "AVON", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "34", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PIGSA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "32", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Industrial de Guatemala", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "25", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Industrial de Guatemala, S.A.", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pigsa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "37", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc planta escuintla", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "28", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC comercial el salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Pdc el salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "23", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Mostro", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "37", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador, S.A de C.V.", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "34", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "19", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "37", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "28", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "30", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CODISA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "36", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador S.A. de C.V.", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "43", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "El Salvador", "empresa": "Avon", "distribuidor": "PDC_ES_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "CDA", "distribuidor": "", "estatus": "Contacto inicial", "edad": "26", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "MDG", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "54", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Francia", "empresa": "PDC_GT_COL", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "AVON", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía Distribuidora SA", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Avon sitio Roosevelt", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "38", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pigsa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "31", "hora": "15"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Panamá", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "57", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC Amati", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "29", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDC", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "38", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Vikingo", "distribuidor": "", "estatus": "Contacto inicial", "edad": "50", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Pdc codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "44", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Compañía Distribuidora S.A.", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "27", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "33", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "España", "empresa": "Codisa", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "34", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "Planta Industrial, S.A", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "42", "hora": "15"}, {"nombre": "Nuevo Lead - Colaborador Guatemala", "tipo": "Colaborador", "pais": "Guatemala", "empresa": "PDX", "distribuidor": "PDC_GT_COL", "estatus": "Contacto inicial", "edad": "22", "hora": "15"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "54", "hora": "14"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "28", "hora": "12"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "47", "hora": "11"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "Pdc comercial El Salvador", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "27", "hora": "11"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "pdc comercial el salvador", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "46", "hora": "11"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "PDC Comercial El Salvador", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "33", "hora": "11"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "Pdc comercial el salvador", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "27", "hora": "11"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "PDC COMERCIAL El Salvador", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "29", "hora": "11"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La Dirsba", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "11"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Sin dato", "empresa": "", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "51", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "59", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "21", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "LASIRENABTL", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "30", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "23", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Sin dato", "empresa": "", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "LA SIRENA", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "38", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "29", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La Sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "41", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Guatemala", "empresa": "La sirena", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "Otiss macalister", "distribuidor": "LASIRENABTL", "estatus": "Contacto inicial", "edad": "47", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "Honduras", "empresa": "La Sirena", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "38", "hora": "10"}, {"nombre": "Nuevo Lead - Colaborador El Salvador", "tipo": "Colaborador", "pais": "Honduras", "empresa": "La sirena", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "46", "hora": "10"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "El Salvador", "empresa": "Pdc comercial El Salvador", "distribuidor": "Seleccione su empleador", "estatus": "Contacto inicial", "edad": "41", "hora": "10"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "60", "hora": "9"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "38", "hora": "9"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "Contacto inicial", "edad": "41", "hora": "8"}, {"nombre": "Nuevo Lead - BTL regional", "tipo": "BTL", "pais": "Costa Rica", "empresa": "Disal", "distribuidor": "LASIRENABTL", "estatus": "TEMPORAL", "edad": "36", "hora": "21"}, {"nombre": "Nuevo Lead - Cliente El Salvador", "tipo": "Cliente", "pais": "Costa Rica", "empresa": "", "distribuidor": "PDC - DIZAC", "estatus": "TEMPORAL", "edad": "100", "hora": "21"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "22", "hora": "20"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "48", "hora": "14"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "41", "hora": "14"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "", "hora": "13"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "28", "hora": "12"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "28", "hora": "12"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "19", "hora": "11"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "37", "hora": "8"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Sin dato", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "49", "hora": "8"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC - CODISA", "estatus": "TEMPORAL", "edad": "39", "hora": "8"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC", "estatus": "TEMPORAL", "edad": "29", "hora": "16"}, {"nombre": "Nuevo Lead - Cliente Guatemala", "tipo": "Cliente", "pais": "Guatemala", "empresa": "", "distribuidor": "PDC", "estatus": "TEMPORAL", "edad": "31", "hora": "15"}];
 
-// ── DISTRIBUIDORES
-new Chart(document.getElementById('c-dist'), {
-  type: 'bar',
-  data: {
-    labels: ['PDC_GT_COL','DISAL_CRCCOL','PDC_ES_COL','LASIRENABTL','PDC-CODISA','Sin empleador','PDC','DISAL_CRCCLI'],
-    datasets: [{ label: 'Leads', data: [126,61,44,30,25,17,2,1],
-      backgroundColor: ['#1A5FA8','#0E7C5A','#D97706','#534AB7','#1A5FA8','#C0392B','#6B7280','#6B7280'],
-      borderRadius: 4, borderSkipped: false }]
-  },
-  options: {
-    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} leads` }}},
-    scales: { x: { ticks: { font } }, y: { ticks: { font } }}
-  }
-});
+// Build alerts tables
+(function(){
+  const tb=document.getElementById('tbody-temp');
+  const obs=['Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Reenviar formulario por WhatsApp','Verificar país y empresa','Reenviar formulario por WhatsApp','Verificar distribuidor correcto','Verificar distribuidor correcto'];
+  tempRows.forEach((r,i)=>{
+    tb.innerHTML+=`<tr><td>${i+1}</td><td>${r.nombre||'—'}</td><td><span class="badge badge-blue">${r.pais}</span></td><td><span class="badge ${r.tipo==='Cliente'?'badge-green':r.tipo==='BTL'?'badge-amber':'badge-blue'}">${r.tipo}</span></td><td>${r.dist}</td><td style="color:#C0392B">${r.emp}</td><td style="font-size:11px;color:#6B7280">${obs[i]||'Revisar'}</td></tr>`;
+  });
+  const tf=document.getElementById('tbody-fuera');
+  const fobs=['Empleado internacional PDC — revisar elegibilidad','Empleado internacional Codisa — revisar elegibilidad','País vecino · evaluar incorporar en próxima edición','País vecino · evaluar incorporar en próxima edición','BTL no documentado — confirmar si fue oficial','BTL no documentado — confirmar si fue oficial','Empleado internacional — link sin restricción','Link compartido fuera del territorio','Link compartido fuera del territorio'];
+  fueraRows.forEach((r,i)=>{
+    tf.innerHTML+=`<tr><td>${i+1}</td><td>${r.nombre||'—'}</td><td><span class="badge badge-amber">${r.pais}</span></td><td>${r.tipo}</td><td>${r.emp}</td><td>${r.edad}</td><td style="font-size:11px;color:#6B7280">${fobs[i]||'Revisar'}</td></tr>`;
+  });
+})();
 
-// ── EDAD
-new Chart(document.getElementById('c-edad'), {
-  type: 'bar',
-  data: {
-    labels: ['18–24','25–34','35–44','45–54','55–70'],
-    datasets: [{ label: 'Personas', data: [28,111,89,32,8],
-      backgroundColor: ['#6AA8E8','#1A5FA8','#0D2B4E','#D97706','#92400E'],
-      borderRadius: 4, borderSkipped: false }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} (${Math.round(c.raw/268*100)}%)` }}},
-    scales: { x: { ticks: { font } }, y: { ticks: { font }, beginAtZero: true } }
-  }
-});
+// ── DATA TABLE (TAB 7)
+let filtered = [...allData];
+let currentPage = 1;
+const perPage = 20;
 
-// ── HORA
-new Chart(document.getElementById('c-hora'), {
-  type: 'bar',
-  data: {
-    labels: ['0h','3h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
-    datasets: [{ label: 'Leads',
-      data: [2,1,1,27,6,81,27,19,9,5,62,19,16,11,6,9,3,2,4],
-      backgroundColor: (ctx) => {
-        const i = ctx.dataIndex;
-        if (i === 9) return '#1A5FA8'; // 10h pico
-        if (i === 14) return '#0E7C5A'; // 15h pico
-        if (i >= 7 && i <= 16) return 'rgba(26,95,168,0.45)';
-        return 'rgba(107,114,128,0.35)';
-      },
-      borderRadius: 3, borderSkipped: false }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} registros` }}},
-    scales: { x: { ticks: { font, autoSkip: false }}, y: { ticks: { font }, beginAtZero: true }}
-  }
+function badgePais(p){
+  if(p==='Guatemala') return `<span class="badge badge-blue">${p}</span>`;
+  if(p==='Costa Rica') return `<span class="badge badge-green">${p}</span>`;
+  if(p==='El Salvador') return `<span class="badge badge-amber">${p}</span>`;
+  return `<span class="badge badge-gray">${p}</span>`;
+}
+function badgeTipo(t){
+  if(t==='Colaborador') return `<span class="badge badge-blue">${t}</span>`;
+  if(t==='Cliente') return `<span class="badge badge-green">${t}</span>`;
+  return `<span class="badge badge-amber">${t}</span>`;
+}
+function badgeEst(e){
+  if(e==='TEMPORAL') return `<span class="badge badge-red">${e}</span>`;
+  return `<span class="badge badge-gray">${e}</span>`;
+}
+
+function renderTable(){
+  const tb=document.getElementById('tbody-main');
+  const start=(currentPage-1)*perPage, end=start+perPage;
+  const page=filtered.slice(start,end);
+  tb.innerHTML='';
+  page.forEach((r,i)=>{
+    const rowClass=r.estatus==='TEMPORAL'?'style="background:#FEF2F2"':'';
+    tb.innerHTML+=`<tr ${rowClass}><td>${start+i+1}</td><td>${r.nombre||'—'}</td><td>${badgeTipo(r.tipo)}</td><td>${badgePais(r.pais)}</td><td style="font-size:11px">${r.empresa||'—'}</td><td style="font-size:11px">${r.distribuidor||'—'}</td><td>${badgeEst(r.estatus)}</td><td>${r.edad||'—'}</td><td>${r.hora?r.hora+'h':'—'}</td></tr>`;
+  });
+  document.getElementById('tableCount').textContent=`${filtered.length} registros`;
+  renderPagination();
+}
+
+function renderPagination(){
+  const total=Math.ceil(filtered.length/perPage);
+  const pag=document.getElementById('pagination');
+  pag.innerHTML='';
+  if(total<=1) return;
+  const addBtn=(label,page,active)=>{
+    const b=document.createElement('button');
+    b.className='page-btn'+(active?' active':'');
+    b.textContent=label;
+    b.onclick=()=>{currentPage=page;renderTable();};
+    pag.appendChild(b);
+  };
+  if(currentPage>1) addBtn('‹',currentPage-1,false);
+  for(let i=Math.max(1,currentPage-2);i<=Math.min(total,currentPage+2);i++) addBtn(i,i,i===currentPage);
+  if(currentPage<total) addBtn('›',currentPage+1,false);
+}
+
+function filterTable(){
+  const q=document.getElementById('searchBox').value.toLowerCase();
+  const fp=document.getElementById('filterPais').value;
+  const ft=document.getElementById('filterTipo').value;
+  const fe=document.getElementById('filterEstatus').value;
+  filtered=allData.filter(r=>{
+    const matchQ=!q||r.nombre.toLowerCase().includes(q)||r.empresa.toLowerCase().includes(q)||r.distribuidor.toLowerCase().includes(q);
+    const matchP=!fp||r.pais===fp;
+    const matchT=!ft||r.tipo===ft;
+    const matchE=!fe||r.estatus===fe;
+    return matchQ&&matchP&&matchT&&matchE;
+  });
+  currentPage=1;
+  renderTable();
+}
+
+// Init data table on load
+document.addEventListener('DOMContentLoaded',()=>{
+  renderTable();
+  // Also build tab-0 charts (resumen has no charts, it's already rendered)
 });
 </script>
 </body>
