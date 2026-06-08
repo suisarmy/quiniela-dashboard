@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reto Futbolero · Quiniela Mundial 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root {
+    --navy:   #0D2B4E;
+    --blue:   #1A5FA8;
+    --lblue:  #378ADD;
+    --teal:   #0E7C5A;
+    --green:  #1D9E75;
+    --amber:  #D97706;
+    --red:    #C0392B;
+    --purple: #534AB7;
+    --gray:   #6B7280;
+    --lgray:  #F3F4F6;
+    --white:  #FFFFFF;
+    --bg:     #0A0F1E;
+    --surface:#111827;
+    --surface2:#1C2539;
+    --border: rgba(255,255,255,0.07);
+    --text:   #E2E8F0;
+    --muted:  #94A3B8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER */
+  .header {
+    background: linear-gradient(135deg, #0A0F1E 0%, #0D2B4E 60%, #1A3A6E 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 1rem;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-ball {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #1A5FA8, #378ADD);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    box-shadow: 0 0 20px rgba(26,95,168,0.4);
+  }
+  .header-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--white);
+    white-space: nowrap;
+  }
+  .header-title span {
+    color: var(--lblue);
+  }
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .pill-blue  { background: rgba(26,95,168,0.25); color: #60A5FA; border: 1px solid rgba(96,165,250,0.2); }
+  .pill-green { background: rgba(14,124,90,0.25); color: #34D399; border: 1px solid rgba(52,211,153,0.2); }
+  .pill-amber { background: rgba(217,119,6,0.25); color: #FCD34D; border: 1px solid rgba(252,211,77,0.2); }
+
+  /* ── HERO */
+  .hero {
+    background: linear-gradient(180deg, #0D2B4E 0%, #0A0F1E 100%);
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--lblue);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .hero-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+  .hero-heading em {
+    font-style: normal;
+    color: var(--lblue);
+  }
+  .hero-sub {
+    font-size: 0.9rem;
+    color: var(--muted);
+    max-width: 620px;
+  }
+
+  /* ── KPI GRID */
+  .kpi-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent, #1A5FA8);
+  }
+  .kpi-label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .kpi-value { font-family: 'Space Grotesk', sans-serif; font-size: 1.9rem; font-weight: 700; color: var(--white); line-height: 1; }
+  .kpi-sub   { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .kpi-warn  { --accent: #C0392B; }
+  .kpi-teal  { --accent: #0E7C5A; }
+  .kpi-amber { --accent: #D97706; }
+  .kpi-purp  { --accent: #534AB7; }
+  .kpi-green { --accent: #1D9E75; }
+
+  /* ── MAIN GRID */
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .full-width { grid-column: 1 / -1; }
+
+  /* ── CHART CARD */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .card-title  { font-family: 'Space Grotesk', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--white); }
+  .card-sub    { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .legend-row  { display: flex; flex-wrap: wrap; gap: 12px; }
+  .leg-item    { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+  .leg-dot     { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .chart-wrap  { position: relative; }
+
+  /* ── ALERT CARDS */
+  .alert-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .alert-card {
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    border: 1px solid;
+  }
+  .alert-red    { background: rgba(192,57,43,0.1); border-color: rgba(192,57,43,0.3); }
+  .alert-amber  { background: rgba(217,119,6,0.1); border-color: rgba(217,119,6,0.3); }
+  .alert-purple { background: rgba(83,74,183,0.1); border-color: rgba(83,74,183,0.3); }
+  .alert-icon   { font-size: 1.5rem; margin-bottom: 6px; }
+  .alert-num    { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; }
+  .alert-red    .alert-num { color: #F87171; }
+  .alert-amber  .alert-num { color: #FCD34D; }
+  .alert-purple .alert-num { color: #A5B4FC; }
+  .alert-title  { font-size: 0.8rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .alert-desc   { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* ── INSIGHT BOX */
+  .insight {
+    background: rgba(26,95,168,0.1);
+    border: 1px solid rgba(26,95,168,0.25);
+    border-left: 3px solid var(--blue);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #93C5FD;
+    line-height: 1.5;
+  }
+
+  /* ── SECTION LABEL */
+  .section-label {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.5rem 0 0;
+  }
+  .section-label-text {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .section-label-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── FOOTER */
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 768px) {
+    .main { grid-template-columns: 1fr; }
+    .full-width { grid-column: 1; }
+    .alert-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .header-meta .pill:nth-child(n+3) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="header-ball">⚽</div>
+      <div class="header-title">Reto Futbolero <span>· Quiniela Mundial 2026</span></div>
+    </div>
+    <div class="header-meta">
+      <span class="pill pill-blue">310 leads</span>
+      <span class="pill pill-green">2–8 jun 2026</span>
+      <span class="pill pill-amber">3 países core</span>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Análisis de leads · Campaña WebConnect</div>
+    <h1 class="hero-heading">Dashboard <em>Ejecutivo</em></h1>
+    <p class="hero-sub">310 participantes registrados entre el 2 y el 8 de junio de 2026 en Guatemala, Costa Rica y El Salvador. El 77.1% llegó en solo dos días.</p>
+  </div>
+</section>
+
+<!-- KPIs -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-label">Total leads</div>
+    <div class="kpi-value">310</div>
+    <div class="kpi-sub">7 días de campaña</div>
+  </div>
+  <div class="kpi-card kpi-teal">
+    <div class="kpi-label">Guatemala</div>
+    <div class="kpi-value">159</div>
+    <div class="kpi-sub">51.3% · PDC / Codisa</div>
+  </div>
+  <div class="kpi-card kpi-amber">
+    <div class="kpi-label">Costa Rica</div>
+    <div class="kpi-value">62</div>
+    <div class="kpi-sub">20.0% · DISAL</div>
+  </div>
+  <div class="kpi-card kpi-purp">
+    <div class="kpi-label">El Salvador</div>
+    <div class="kpi-value">54</div>
+    <div class="kpi-sub">17.4% · PDC</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Colaboradores</div>
+    <div class="kpi-value">250</div>
+    <div class="kpi-sub">80.6% del total</div>
+  </div>
+  <div class="kpi-card kpi-green">
+    <div class="kpi-label">Clientes</div>
+    <div class="kpi-value">29</div>
+    <div class="kpi-sub">9.4% · solo GT activo</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Edad promedio</div>
+    <div class="kpi-value">35.1</div>
+    <div class="kpi-sub">268 con edad registrada</div>
+  </div>
+  <div class="kpi-card kpi-warn">
+    <div class="kpi-label">Alertas ⚠️</div>
+    <div class="kpi-value">40</div>
+    <div class="kpi-sub">Requieren acción</div>
+  </div>
+</div>
+
+<!-- MAIN CHARTS -->
+<div class="main">
+
+  <!-- SECTION: ACTIVIDAD -->
+  <div class="section-label">
+    <span class="section-label-text">Actividad de campaña</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <!-- Chart 1: Daily stacked -->
+  <div class="chart-card full-width">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Inscripciones diarias por país</div>
+        <div class="card-sub">4 jun (112) + 5 jun (127) = 77.1% del total en solo 48 horas</div>
+      </div>
+      <div class="legend-row">
+        <span class="leg-item"><span class="leg-dot" style="background:#1A5FA8"></span>Guatemala</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#0E7C5A"></span>Costa Rica</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#D97706"></span>El Salvador</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#534AB7"></span>BTL/Otros</span>
+      </div>
+    </div>
+    <div class="chart-wrap" style="height:240px">
+      <canvas id="c-daily"></canvas>
+    </div>
+    <div class="insight">💡 Guatemala inició 3 días antes que CR y ES. Un lanzamiento simultáneo en los 3 países habría maximizado el pico del día 4–5.</div>
+  </div>
+
+  <!-- Chart 2: Country donut -->
+  <div class="chart-card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Distribución por país</div>
+        <div class="card-sub">Guatemala domina con más de la mitad</div>
+      </div>
+    </div>
+    <div class="legend-row">
+      <span class="leg-item"><span class="leg-dot" style="background:#1A5FA8"></span>Guatemala 51.3%</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#0E7C5A"></span>Costa Rica 20.0%</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#D97706"></span>El Salvador 17.4%</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#6B7280"></span>Otros 11.3%</span>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c-pais"></canvas>
+    </div>
+  </div>
+
+  <!-- Chart 3: Tipo x país -->
+  <div class="chart-card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Tipo de participante por país</div>
+        <div class="card-sub">Solo Guatemala activa clientes finales</div>
+      </div>
+    </div>
+    <div class="legend-row">
+      <span class="leg-item"><span class="leg-dot" style="background:#1A5FA8"></span>Colaborador</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#1D9E75"></span>Cliente</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#D97706"></span>BTL</span>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c-tipo-pais"></canvas>
+    </div>
+    <div class="insight">💡 CR y ES tienen 0 o casi 0 clientes. Oportunidad no explotada en ambos mercados.</div>
+  </div>
+
+  <!-- SECTION: DISTRIBUIDORES -->
+  <div class="section-label">
+    <span class="section-label-text">Canales y distribuidores</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <!-- Chart 4: Distribuidores -->
+  <div class="chart-card full-width">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Leads por distribuidor</div>
+        <div class="card-sub">PDC_GT + DISAL_CR + PDC_ES concentran el 74.5% de toda la campaña</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c-dist"></canvas>
+    </div>
+    <div class="insight">⚠️ DISAL representa el 72.6% de Costa Rica. Si DISAL no activa, Costa Rica no participa — riesgo de concentración crítico.</div>
+  </div>
+
+  <!-- SECTION: PERFIL -->
+  <div class="section-label">
+    <span class="section-label-text">Perfil del participante</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <!-- Chart 5: Edad -->
+  <div class="chart-card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Grupos de edad</div>
+        <div class="card-sub">268 registros válidos · promedio 35.1 años</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c-edad"></canvas>
+    </div>
+    <div class="insight">💡 El grupo 25–34 representa el 41.4%. Perfil joven y digital — responde bien a mecánicas de gamificación.</div>
+  </div>
+
+  <!-- Chart 6: Hora -->
+  <div class="chart-card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Inscripciones por hora del día</div>
+        <div class="card-sub">Comportamiento 100% laboral · picos 10h y 15h</div>
+      </div>
+    </div>
+    <div class="chart-wrap" style="height:220px">
+      <canvas id="c-hora"></canvas>
+    </div>
+    <div class="insight">💡 Enviar convocatoria a las 9h captura el pico de 10h. Segunda comunicación a las 14h para el pico de 15h.</div>
+  </div>
+
+  <!-- SECTION: ALERTAS -->
+  <div class="section-label">
+    <span class="section-label-text">Alertas operativas</span>
+    <div class="section-label-line"></div>
+  </div>
+
+  <!-- Alertas -->
+  <div class="full-width">
+    <div class="alert-grid">
+      <div class="alert-card alert-red">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-num">14</div>
+        <div class="alert-title">Leads TEMPORALES</div>
+        <div class="alert-desc">Formularios incompletos — no pueden activarse en la app. Casi todos son clientes de Guatemala (PDC-CODISA). Acción: reenviar formulario por WhatsApp.</div>
+      </div>
+      <div class="alert-card alert-amber">
+        <div class="alert-icon">📋</div>
+        <div class="alert-num">17</div>
+        <div class="alert-title">Sin distribuidor asignado</div>
+        <div class="alert-desc">Registros con "Seleccione su empleador" — sin trazabilidad comercial. Distribuidos en GT, ES y CR. Acción: hacer el campo obligatorio en el formulario.</div>
+      </div>
+      <div class="alert-card alert-purple">
+        <div class="alert-icon">🌐</div>
+        <div class="alert-num">9</div>
+        <div class="alert-title">Fuera del core geográfico</div>
+        <div class="alert-desc">España (2), Honduras (2), Panamá (2), Portugal, Francia y Costa de Marfil. El link circuló sin restricción. Acción: activar validación de país en el formulario.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  Reto Futbolero · Quiniela Mundial 2026 · Análisis WebConnect · Datos: Kommo CRM Export 8 junio 2026 · 310 leads · 3 países
+</footer>
+
+<script>
+Chart.defaults.color = '#94A3B8';
+Chart.defaults.borderColor = 'rgba(255,255,255,0.06)';
+const font = { family: 'Inter, sans-serif', size: 11 };
+
+// ── DAILY STACKED
+new Chart(document.getElementById('c-daily'), {
+  type: 'bar',
+  data: {
+    labels: ['2 jun','3 jun','4 jun','5 jun','6 jun','7 jun','8 jun'],
+    datasets: [
+      { label: 'Guatemala',   data: [2,9,77,46,13,7,5],  backgroundColor: '#1A5FA8', stack: 's', borderRadius: 3 },
+      { label: 'Costa Rica',  data: [0,2,3,35,18,0,4],   backgroundColor: '#0E7C5A', stack: 's' },
+      { label: 'El Salvador', data: [0,0,20,25,6,2,1],   backgroundColor: '#D97706', stack: 's' },
+      { label: 'BTL/Otros',   data: [0,1,12,21,1,0,0],   backgroundColor: '#534AB7', stack: 's' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw}` }}},
+    scales: {
+      x: { stacked: true, ticks: { font } },
+      y: { stacked: true, ticks: { font } }
+    }
+  }
+});
+
+// ── DONUT PAÍS
+new Chart(document.getElementById('c-pais'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Guatemala','Costa Rica','El Salvador','BTL/Otros'],
+    datasets: [{ data: [159,62,54,35], backgroundColor: ['#1A5FA8','#0E7C5A','#D97706','#6B7280'], borderWidth: 0, hoverOffset: 8 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false, cutout: '65%',
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.label}: ${c.raw} (${Math.round(c.raw/310*100)}%)` }}}
+  }
+});
+
+// ── TIPO x PAÍS
+new Chart(document.getElementById('c-tipo-pais'), {
+  type: 'bar',
+  data: {
+    labels: ['Guatemala','Costa Rica','El Salvador'],
+    datasets: [
+      { label: 'Colaborador', data: [121,56,46], backgroundColor: '#1A5FA8', stack: 's', borderRadius: 3 },
+      { label: 'Cliente',     data: [24,2,0],    backgroundColor: '#1D9E75', stack: 's' },
+      { label: 'BTL',         data: [14,4,8],    backgroundColor: '#D97706', stack: 's' },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.dataset.label}: ${c.raw}` }}},
+    scales: {
+      x: { stacked: true, ticks: { font } },
+      y: { stacked: true, ticks: { font } }
+    }
+  }
+});
+
+// ── DISTRIBUIDORES
+new Chart(document.getElementById('c-dist'), {
+  type: 'bar',
+  data: {
+    labels: ['PDC_GT_COL','DISAL_CRCCOL','PDC_ES_COL','LASIRENABTL','PDC-CODISA','Sin empleador','PDC','DISAL_CRCCLI'],
+    datasets: [{ label: 'Leads', data: [126,61,44,30,25,17,2,1],
+      backgroundColor: ['#1A5FA8','#0E7C5A','#D97706','#534AB7','#1A5FA8','#C0392B','#6B7280','#6B7280'],
+      borderRadius: 4, borderSkipped: false }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} leads` }}},
+    scales: { x: { ticks: { font } }, y: { ticks: { font } }}
+  }
+});
+
+// ── EDAD
+new Chart(document.getElementById('c-edad'), {
+  type: 'bar',
+  data: {
+    labels: ['18–24','25–34','35–44','45–54','55–70'],
+    datasets: [{ label: 'Personas', data: [28,111,89,32,8],
+      backgroundColor: ['#6AA8E8','#1A5FA8','#0D2B4E','#D97706','#92400E'],
+      borderRadius: 4, borderSkipped: false }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} (${Math.round(c.raw/268*100)}%)` }}},
+    scales: { x: { ticks: { font } }, y: { ticks: { font }, beginAtZero: true } }
+  }
+});
+
+// ── HORA
+new Chart(document.getElementById('c-hora'), {
+  type: 'bar',
+  data: {
+    labels: ['0h','3h','7h','8h','9h','10h','11h','12h','13h','14h','15h','16h','17h','18h','19h','20h','21h','22h','23h'],
+    datasets: [{ label: 'Leads',
+      data: [2,1,1,27,6,81,27,19,9,5,62,19,16,11,6,9,3,2,4],
+      backgroundColor: (ctx) => {
+        const i = ctx.dataIndex;
+        if (i === 9) return '#1A5FA8'; // 10h pico
+        if (i === 14) return '#0E7C5A'; // 15h pico
+        if (i >= 7 && i <= 16) return 'rgba(26,95,168,0.45)';
+        return 'rgba(107,114,128,0.35)';
+      },
+      borderRadius: 3, borderSkipped: false }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => ` ${c.raw} registros` }}},
+    scales: { x: { ticks: { font, autoSkip: false }}, y: { ticks: { font }, beginAtZero: true }}
+  }
+});
+</script>
+</body>
+</html>
